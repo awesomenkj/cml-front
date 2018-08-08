@@ -5,13 +5,10 @@ import { SharedModule } from '../shared/shared.module';
 import { MomentModule } from 'angular2-moment';
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { ListComponent } from './list/list.component';
 import { ViewComponent } from './view/view.component';
 import { CreateComponent } from './create/create.component';
 import { EditComponent } from './edit/edit.component';
 import { OnlineComponent } from './online/online.component';
-import { RepositoriesComponent } from './repositories/repositories.component';
-import { MembersComponent } from './members/members.component';
 
 const routes: Routes = [
   {
@@ -21,7 +18,7 @@ const routes: Routes = [
   },
   {
     path: 'all',
-    component: ListComponent
+    loadChildren: './list/list.module#ListModule'
   },
   {
     path: 'create',
@@ -41,11 +38,11 @@ const routes: Routes = [
   },
   {
     path: 'repositories',
-    component: RepositoriesComponent
+    loadChildren: './repositories/repositories.module#RepositoriesModule'
   },
   {
     path: 'members',
-    component: MembersComponent
+    loadChildren: './members/members.module#MembersModule'
   }
 ];
 @NgModule({
@@ -57,10 +54,9 @@ const routes: Routes = [
     ReactiveFormsModule
   ],
   declarations: [
-    ListComponent,
     ViewComponent,
     CreateComponent,
-    EditComponent, OnlineComponent, RepositoriesComponent, MembersComponent
+    EditComponent, OnlineComponent
   ]
 })
 export class OrganizationModule { }

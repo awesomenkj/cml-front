@@ -25,7 +25,7 @@
     
   <mat-sidenav-content>
     <header>  
-      <h1>BlockPush admin</h1>
+      <h1 routerLink="/coins/all">BlockPush admin</h1>
       <a (click)="sidenav.open()" class="menu-button"><mat-icon>menu</mat-icon></a>
       <div class="market-bar clearfix" *ngIf="marketData && coinsData">
         <p><b>Market Cap:</b> {{marketData.marketCap | currency:'USD':'symbol-narrow':'4.0'}}</p>
