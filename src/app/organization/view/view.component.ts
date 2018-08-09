@@ -44,12 +44,20 @@ export class ViewComponent implements OnInit {
         this.coin = coin;
 
         if (!this.coin.gitStatus.synced && this.coin.gitStatus.requestId) {
-          this.gitService.getGitPoolRequest(this.coin.gitStatus.requestId).subscribe((request) => {
-            this.gitRequest = request;
+          let currentStatus = -1;
+          this.gitService.getGitPoolRequest(this.coin.gitStatus.requestId).subscribe((request: any) => {
             this.isGithubLoading = false;
 
+            if (currentStatus >= request.status) {
+              return;
+            }
+            this.gitRequest = request;
+            currentStatus = this.gitRequest.status;
+            if (this.gitRequest.status === 3) {
+              currentStatus = -1;
+            }
             if (this.gitRequest.status === 4) {
-
+              currentStatus = -1;
               this.gitService.getOrganization(this.gitRequest.data[0].value.toLowerCase()).subscribe((org) => {
                 if (org) {
                   this.gitOrganization = org;
@@ -96,11 +104,13 @@ export class ViewComponent implements OnInit {
   };
 
   public syncGithub = () => {
-    if (this.githubForm.valid) {
-      this.isGithubLoading = true;
-      this.gitService.requestGithubOrganization(this.coin.slug, this.coin.cmcId,
-        this.githubForm.controls['organization'].value);
+    if (!this.githubForm.valid) {
+
     }
+    this.isGithubLoading = true;
+    this.gitService.requestGithubOrganization(this.coin.slug, this.coin.cmcId,
+      this.githubForm.controls['organization'].value);
+
   };
 
   public linkGithub = () => {
@@ -111,12 +121,14 @@ export class ViewComponent implements OnInit {
   };
 
   public resyncGithub = () => {
-    if (this.coin.gitStatus.requestId) {
-      this.isGithubLoading = true;
-      this.gitService.retryGithubSync(this.coin.gitStatus.requestId).then(() => {
-        this.isGithubLoading = false;
-      });
+    if (!this.coin.gitStatus.requestId) {
+      return;
     }
+
+    this.isGithubLoading = true;
+    this.gitService.retryGithubSync(this.coin.gitStatus.requestId).then(() => {
+      this.isGithubLoading = false;
+    });
   };
 
   public cancelGithub = () => {
