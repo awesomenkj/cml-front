@@ -11,8 +11,8 @@ import { DaoService } from '../services/dao.service';
 })
 export class ViewComponent implements OnInit {
 
-  public coin;
-  public gitRequest;
+  public coin; // coin object
+  public gitRequest; // git syncing status
   public gitOrganization;
   public gitRepositories = [];
   public gitMembers = [];
@@ -39,25 +39,27 @@ export class ViewComponent implements OnInit {
   }
 
   public ngOnInit() {
+    // Get Coin Data
+    this.getCoinData();
+  }
+
+  // Get Initial Coin Data
+  public getCoinData = () => {
+    // Get Coin Data with coin name(router parameter)
     this.dao.getCoin(this.route.snapshot.params['label']).subscribe((coin) => {
       if (coin) {
         this.coin = coin;
-
+        // if github syncing request already submitted, but not synced yet.
         if (!this.coin.gitStatus.synced && this.coin.gitStatus.requestId) {
-          let currentStatus = -1;
           this.gitService.getGitPoolRequest(this.coin.gitStatus.requestId).subscribe((request: any) => {
             this.isGithubLoading = false;
-
-            if (currentStatus >= request.status) {
+            // there are 4 status, 0: submitted, 1: pending, 2: requested, 3: failed, 4: success
+            if (request.status <= -1) {
               return;
             }
             this.gitRequest = request;
-            currentStatus = this.gitRequest.status;
-            if (this.gitRequest.status === 3) {
-              currentStatus = -1;
-            }
+            // if syncing request is succeeded (status:4), initialize organization data including members, repositories.
             if (this.gitRequest.status === 4) {
-              currentStatus = -1;
               this.gitService.getOrganization(this.gitRequest.data[0].value.toLowerCase()).subscribe((org) => {
                 if (org) {
                   this.gitOrganization = org;
@@ -74,7 +76,7 @@ export class ViewComponent implements OnInit {
               });
             }
           });
-        } else if (this.coin.gitStatus.synced) {
+        } else if (this.coin.gitStatus.synced) { // if coin is already synced with github
           this.gitService.getOrganizationById(this.coin.cmcId).subscribe((org) => {
             if (org.length === 1) {
               this.gitOrganization = org[0];
@@ -108,9 +110,11 @@ export class ViewComponent implements OnInit {
 
     }
     this.isGithubLoading = true;
-    this.gitService.requestGithubOrganization(this.coin.slug, this.coin.cmcId,
-      this.githubForm.controls['organization'].value);
-
+    this.gitService.requestGithubOrganization(
+      this.coin.slug,
+      this.coin.cmcId,
+      this.githubForm.controls['organization'].value
+    );
   };
 
   public linkGithub = () => {
@@ -152,14 +156,14 @@ export class ViewComponent implements OnInit {
     });
   };
 
-  public catculateRepositoryProperty = (property: string) => {
+  public calculateRepositoryProperty = (property: string) => {
     const entries = this.gitRepositories.map((repo) => {
       return parseInt(repo[property] ? repo[property] : '0');
     });
     return entries.reduce((ac, next) => ac + next, 0);
   };
 
-  public catculateCommits = () => {
+  public calculateCommits = () => {
     const entries = this.gitRepositories.map((repo) => {
       return parseInt(repo.defaultBranchRef ? repo.defaultBranchRef.target.history.totalCount : '0');
     });

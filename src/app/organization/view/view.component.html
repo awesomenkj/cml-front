@@ -1,4 +1,5 @@
 <app-loader [hidden]="loaded"></app-loader>
+
 <div class="wrapper">
   <ul class="page-nav" *ngIf="coin">
     <li>
@@ -11,7 +12,7 @@
       <label>{{coin.name}}</label>
     </li>
   </ul>
-  
+
   <section class="grid" *ngIf="coin">
     <mat-card>
       <mat-card-header>
@@ -52,16 +53,16 @@
                 <p *ngIf="!coin.finance.marketCap">?</p>
               </td>
               <td>
-                <p *ngIf="coin.finance.volume">{{coin.finance.volume | currency:'USD':'symbol-narrow':'4.0'}}</p> 
-                <p *ngIf="!coin.finance.volume">?</p> 
+                <p *ngIf="coin.finance.volume">{{coin.finance.volume | currency:'USD':'symbol-narrow':'4.0'}}</p>
+                <p *ngIf="!coin.finance.volume">?</p>
               </td>
               <td>
-                <p *ngIf="coin.finance.currentSupply">{{coin.finance.currentSupply | number}} <small>{{coin.symbol}}</small></p> 
-                <p *ngIf="!coin.finance.currentSupply">?</p> 
+                <p *ngIf="coin.finance.currentSupply">{{coin.finance.currentSupply | number}} <small>{{coin.symbol}}</small></p>
+                <p *ngIf="!coin.finance.currentSupply">?</p>
               </td>
               <td *ngIf="coin.finance.currentSupply != coin.finance.maxSupply && coin.finance.maxSupply">
-                <p *ngIf="coin.finance.maxSupply">{{coin.finance.maxSupply | number}} <small>{{coin.symbol}}</small></p> 
-                <p *ngIf="!coin.finance.maxSupply">?</p> 
+                <p *ngIf="coin.finance.maxSupply">{{coin.finance.maxSupply | number}} <small>{{coin.symbol}}</small></p>
+                <p *ngIf="!coin.finance.maxSupply">?</p>
               </td>
             </tr>
           </tbody>
@@ -82,15 +83,19 @@
             </tr>
           </tbody>
         </table>
-  
+
         <label><small>Last updated {{coin.finance.updatedAt | amFromUnix | amTimeAgo}}</small></label>
       </mat-card-content>
     </mat-card>
-    
+
     <mat-card>
       <app-loader [hidden]="!isGithubLoading"></app-loader>
       <mat-card-header>
-        <mat-card-title><p><b>Github</b></p></mat-card-title>
+        <mat-card-title>
+          <p>
+            <b>Github</b>
+          </p>
+        </mat-card-title>
         <mat-card-subtitle></mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
@@ -110,12 +115,12 @@
             <button mat-button (click)="enableGithub()">Enable Github tracking</button>
         </div>
         <div *ngIf="!coin.gitStatus.synced && !coin.gitStatus.syncing && isGithubFormVisible" class="centered">
-          <p>You are about to sync {{coin.name}} github orgnization profile.</p>
+          <p>You are about to sync {{coin.name}} github organization profile.</p>
           <p>Please enter Github organization name</p>
           <form [formGroup]="githubForm" class="form" role="form">
             <div class="form-block">
               <mat-form-field>
-                <input matInput type="text" placeholder="Github orgnaization name (ex: {{coin.slug}})" formControlName="organization">
+                <input matInput type="text" placeholder="Github organization name (ex: {{coin.slug}})" formControlName="organization">
               </mat-form-field>
             </div>
             <div class="form-block">
@@ -126,7 +131,7 @@
         </div>
         <div *ngIf="coin.gitStatus.syncing" class="centered">
           <div *ngIf="coin.gitStatus.requestId && gitRequest">
-            <p *ngIf="gitRequest.status == 0">Your request for syncing <a [href]="'https://github.com/'+gitRequest.data[0].value" target="_blank">https://github.com/{{gitRequest.data[0].value}}</a> have been submited.</p>
+            <p *ngIf="gitRequest.status == 0">Your request for syncing <a [href]="'https://github.com/'+gitRequest.data[0].value" target="_blank">https://github.com/{{gitRequest.data[0].value}}</a> have been submitted.</p>
             <p *ngIf="gitRequest.status == 1">Your request for syncing <a [href]="'https://github.com/'+gitRequest.data[0].value" target="_blank">https://github.com/{{gitRequest.data[0].value}}</a> is pending.</p>
             <p *ngIf="gitRequest.status == 2">Your request for syncing <a [href]="'https://github.com/'+gitRequest.data[0].value" target="_blank">https://github.com/{{gitRequest.data[0].value}}</a> has been requested.</p>
             <p *ngIf="gitRequest.status == 3">Your request for syncing <a [href]="'https://github.com/'+gitRequest.data[0].value" target="_blank">https://github.com/{{gitRequest.data[0].value}}</a> failed.</p>
@@ -229,11 +234,11 @@
             </thead>
             <tbody>
               <tr>
-                <td><p>{{catculateCommits() | number}}</p></td>
-                <td><p>{{catculateRepositoryProperty('forks') | number}}</p></td>
-                <td><p>{{catculateRepositoryProperty('issues') | number}}</p></td>
-                <td><p>{{catculateRepositoryProperty('milestones') | number}}</p></td>
-                <td><p>{{catculateRepositoryProperty('projects') | number}}</p></td>
+                <td><p>{{calculateCommits() | number}}</p></td>
+                <td><p>{{calculateRepositoryProperty('forks') | number}}</p></td>
+                <td><p>{{calculateRepositoryProperty('issues') | number}}</p></td>
+                <td><p>{{calculateRepositoryProperty('milestones') | number}}</p></td>
+                <td><p>{{calculateRepositoryProperty('projects') | number}}</p></td>
               </tr>
             </tbody>
           </table>
@@ -248,10 +253,10 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><p>{{catculateRepositoryProperty('pullRequests') | number}}</p></td>
-                  <td><p>{{catculateRepositoryProperty('releases') | number}}</p></td>
-                  <td><p>{{catculateRepositoryProperty('stargazers') | number}}</p></td>
-                  <td><p>{{catculateRepositoryProperty('watchers') | number}}</p></td>
+                  <td><p>{{calculateRepositoryProperty('pullRequests') | number}}</p></td>
+                  <td><p>{{calculateRepositoryProperty('releases') | number}}</p></td>
+                  <td><p>{{calculateRepositoryProperty('stargazers') | number}}</p></td>
+                  <td><p>{{calculateRepositoryProperty('watchers') | number}}</p></td>
                 </tr>
               </tbody>
             </table>
