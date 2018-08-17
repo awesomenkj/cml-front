@@ -18,6 +18,9 @@ import { reducers } from './stats/store/reducers/index';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { EffectsModule } from '@ngrx/effects';
 import { GetProductsEffect } from './stats/store/effects/getMarketData.effect';
+import { OrganisationEffect } from './stats/store/effects/organisation.effects';
+import { RepoEffect } from './stats/store/effects/repositorry.effect';
+import { MemberEffect } from './stats/store/effects/member.effect';
 
 
 @NgModule({
@@ -36,7 +39,7 @@ import { GetProductsEffect } from './stats/store/effects/getMarketData.effect';
     SharedModule,
     StoreModule.forRoot(reducers),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([GetProductsEffect]),
+    EffectsModule.forRoot([GetProductsEffect, OrganisationEffect, RepoEffect, MemberEffect]),
   ],
   providers: [],
   bootstrap: [AppComponent]
