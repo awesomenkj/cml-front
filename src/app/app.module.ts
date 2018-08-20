@@ -13,6 +13,15 @@ import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { routes } from './routes';
 
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './stats/store/reducers/index';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { GetProductsEffect } from './stats/store/effects/getMarketData.effect';
+import { OrganisationEffect } from './stats/store/effects/organisation.effects';
+import { RepoEffect } from './stats/store/effects/repositorry.effect';
+import { MemberEffect } from './stats/store/effects/member.effect';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +36,10 @@ import { routes } from './routes';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireAuthModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forRoot(reducers),
+    !environment.production ? StoreDevtoolsModule.instrument() : [],
+    EffectsModule.forRoot([GetProductsEffect, OrganisationEffect, RepoEffect, MemberEffect]),
   ],
   providers: [],
   bootstrap: [AppComponent]

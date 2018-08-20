@@ -27,11 +27,11 @@
     <header>  
       <h1 routerLink="/coins/all">BlockPush admin</h1>
       <a (click)="sidenav.open()" class="menu-button"><mat-icon>menu</mat-icon></a>
-      <div class="market-bar clearfix" *ngIf="marketData && coinsData">
+      <div class="market-bar clearfix"  *ngIf="marketData$ | async as marketData">
         <p><b>Market Cap:</b> {{marketData.marketCap | currency:'USD':'symbol-narrow':'4.0'}}</p>
         <p><b>24h Volume:</b> {{marketData.volume | currency:'USD':'symbol-narrow':'4.0'}}</p>
         <p><b>BTC ratio:</b> {{marketData.bitcoinShare}}%</p>
-        <p><b>Online coins:</b> {{coinsData.online}}/{{coinsData.count}}</p>
+        <p><b>Online coins:</b> {{ coinsDataOnline$ | async }}/{{coinsDataCount$ | async }}</p>
       </div>
     </header>
     <main>

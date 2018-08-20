@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+// import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-request',
   templateUrl: './request.component.html',
@@ -7,7 +9,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RequestComponent implements OnInit {
 
-  public constructor() { }
+  public constructor(
+  ) { }
 
   public ngOnInit() {
   }

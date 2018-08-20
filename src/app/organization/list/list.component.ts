@@ -5,6 +5,10 @@ import { MatPaginator, MatSort } from '@angular/material';
 import { DaoService } from '../services/dao.service';
 import { GithubService } from '../services/github.service';
 
+import { Store } from '@ngrx/store';
+import * as CoinsAction from '../../stats/store/actions/getRequests.action';
+import * as Reducers from '../../stats/store/reducers/index';
+
 @Component({
   selector: 'app-org-list',
   templateUrl: './list.component.html',
@@ -23,10 +27,12 @@ export class ListComponent implements OnInit, AfterViewInit {
   public constructor(
     private dao: DaoService,
     private router: Router,
-    private gitService: GithubService
+    private gitService: GithubService,
+    private store: Store<Reducers.IState>,
   ) { }
 
   public ngOnInit() {
+    this.store.dispatch(new CoinsAction.GetCoinsData() );
     this.paginator._intl.itemsPerPageLabel = 'Coins per page';
     this.coinsDatasource = new CoinsDataSource(this.dao, this.paginator, this.sort, this.gitService);
     this.coinsDatasource.coins.subscribe((coins) => {
