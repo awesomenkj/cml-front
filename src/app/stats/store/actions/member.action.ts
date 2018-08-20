@@ -5,7 +5,6 @@ export const GET_MEMBER_SUCCESS = '[Member] Get Member Success';
 
 export class GetMember implements Action {
     public readonly type = GET_MEMBER;
-    public constructor( public payload: boolean ) {}
 }
 export class GetMemberSuccess implements Action {
     public readonly type = GET_MEMBER_SUCCESS;

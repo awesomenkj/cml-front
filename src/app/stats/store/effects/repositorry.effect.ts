@@ -12,7 +12,6 @@ export class RepoEffect {
     @Effect()
     public getRepoData$: Observable<Action> = this.action$
     .ofType(getRepository.GET_REPOSITORY).pipe(
-        map((action: getRepository.GetRepository) => action.payload),
         switchMap( () => this.daoService.getRepositories()),
         map( results => new getRepository.GetRepositorySuccess(results))
     );

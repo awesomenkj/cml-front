@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-// import { DaoService } from './organization/services/dao.service';
 
 import { Store } from '@ngrx/store';
 import * as CoinsAction from './stats/store/actions/getRequests.action';
@@ -23,7 +22,9 @@ export class AppComponent implements OnInit {
 
   public menuLink;
   public viewLink;
-  public marketData;
+  public marketData$;
+  public coinsDataCount$;
+  public coinsDataOnline$;
   public coinsData = {};
 
   public constructor(
@@ -33,22 +34,15 @@ export class AppComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
-    this.store.dispatch(new MarketAction.GetData(true));
-    this.store.dispatch(new CoinsAction.GetCoinsOnlineData(true) );
-    this.store.dispatch(new CoinsAction.GetCoinsData(true) );
-    this.store.dispatch(new OrganisationAction.GetOrganisation(true));
-    this.store.dispatch(new RepositoryAction.GetRepository(true));
-    this.store.dispatch(new MemberAction.GetMember(true));
+    this.store.dispatch(new MarketAction.GetData());
+    this.store.dispatch(new CoinsAction.GetCoinsOnlineData() );
+    this.store.dispatch(new OrganisationAction.GetOrganisation());
+    this.store.dispatch(new RepositoryAction.GetRepository());
+    this.store.dispatch(new MemberAction.GetMember());
 
-    this.store.select('GetMarket', 'marketData').subscribe( marketData => {
-      this.marketData = marketData[0];
-    });
-    this.store.select('CoinsData', 'coinslength').subscribe( coinsLength => {
-      this.coinsData['count'] = coinsLength;
-    });
-    this.store.select('CoinsData', 'onlineCoins').subscribe( onlineCoinsLength => {
-      this.coinsData['online'] = onlineCoinsLength;
-    });
+    this.marketData$ = this.store.select('GetMarket', 'marketData');
+    this.coinsDataCount$  = this.store.select('CoinsData', 'coinslength');
+    this.coinsDataOnline$  =  this.store.select('CoinsData', 'onlineCoinslength');
     this.router.events.subscribe(() => {
       this.menuLink = this.location.path(true).trim().split('/')[1];
       this.viewLink = this.location.path(true).trim().split('/')[2];

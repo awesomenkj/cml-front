@@ -12,7 +12,6 @@ export class OrganisationEffect {
     @Effect()
     public getOrgasisationData$: Observable<Action> = this.action$
     .ofType(getOrganization.GET_ORGANISATION).pipe(
-        map((action: getOrganization.GetOrganisation) => action.payload),
         switchMap( () => this.daoService.getOrganizations()),
         map( results => new getOrganization.GetGetOrganisationSuccess(results))
     );

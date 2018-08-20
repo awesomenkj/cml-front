@@ -24,6 +24,7 @@ export function reducer ( state = initialState, action: GetDataActions.AllMarket
         case GetDataActions.GET_MARKET_DATA_SUCCESS: {
             return {
                 ...state,
+                isLoading: false,
                 isLoaded: true,
                 marketData: action.payload,
             };

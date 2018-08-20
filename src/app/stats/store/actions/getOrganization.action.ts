@@ -5,7 +5,6 @@ export const GET_ORGANISATION_SUCCESS = '[Organisation] Get Organisation Success
 
 export class GetOrganisation implements Action {
     public readonly type = GET_ORGANISATION;
-    public constructor( public payload: boolean ) {}
 }
 export class GetGetOrganisationSuccess implements Action {
     public readonly type = GET_ORGANISATION_SUCCESS;

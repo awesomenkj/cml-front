@@ -5,7 +5,6 @@ export const GET_REPOSITORY_SUCCESS = '[Repository] Get Repository Success';
 
 export class GetRepository implements Action {
     public readonly type = GET_REPOSITORY;
-    public constructor( public payload: boolean ) {}
 }
 export class GetRepositorySuccess implements Action {
     public readonly type = GET_REPOSITORY_SUCCESS;

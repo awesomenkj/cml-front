@@ -11,7 +11,6 @@ export const GET_COINS_OFFLINE_DATA_SUCCESS = '[Coins] Get Offline Coins Data Su
 
 export class GetCoinsData implements Action {
     public readonly type = GET_COINS_DATA;
-    public constructor( public payload: boolean ) {}
 }
 export class GetCoinsDataSuccess implements Action {
     public readonly type = GET_COINS_DATA_SUCCESS;
@@ -20,7 +19,6 @@ export class GetCoinsDataSuccess implements Action {
 
 export class GetCoinsOfflineData implements Action {
     public readonly type = GET_COINS_OFFLINE_DATA;
-    public constructor( public payload: boolean ) {}
 }
 export class GetCoinsOfflineDataSuccess implements Action {
     public readonly type = GET_COINS_OFFLINE_DATA_SUCCESS;
@@ -29,7 +27,6 @@ export class GetCoinsOfflineDataSuccess implements Action {
 
 export class GetCoinsOnlineData implements Action {
     public readonly type = GET_COINS_ONLINE_DATA;
-    public constructor( public payload: boolean ) {}
 }
 export class GetCoinsOnlineDataSuccess implements Action {
     public readonly type = GET_COINS_ONLINE_DATA_SUCCESS;

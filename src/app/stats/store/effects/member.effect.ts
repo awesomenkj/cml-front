@@ -12,7 +12,6 @@ export class MemberEffect {
     @Effect()
     public getRepoData$: Observable<Action> = this.action$
     .ofType(getMember.GET_MEMBER).pipe(
-        map((action: getMember.GetMember) => action.payload),
         switchMap( () => this.daoService.getMembers()),
         map( results => new getMember.GetMemberSuccess(results))
     );
