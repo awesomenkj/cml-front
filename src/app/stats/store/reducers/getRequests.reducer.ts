@@ -4,6 +4,8 @@ import * as GetDataActions from '../actions/getRequests.action';
 export interface IState {
     isLoading: boolean;
     isLoaded: boolean;
+    pageIndex: any;
+    pageSize: any;
     coins: any;
     onlineCoins: any;
     coinslength: number;
@@ -14,6 +16,8 @@ export interface IState {
 const initialState: IState = {
     isLoading: false,
     isLoaded: false,
+    pageIndex: 0,
+    pageSize: 50,
     coins: [],
     onlineCoins: [],
     coinslength: 0,
@@ -26,7 +30,7 @@ export function reducer ( state = initialState, action: GetDataActions.AllProduc
         case GetDataActions.GET_COINS_DATA: {
             return {
                 ...state,
-                isLoading: true
+                isLoading: true,
             };
         }
         case GetDataActions.GET_COINS_ONLINE_DATA: {
@@ -55,11 +59,26 @@ export function reducer ( state = initialState, action: GetDataActions.AllProduc
             };
         }
         case GetDataActions.GET_COINS_DATA_SUCCESS: {
+            const payload = action.payload.slice(0, 50);
             return {
                 ...state,
                 isLoading: false,
                 isLoaded: true,
-                coins: action.payload,
+                coins: payload,
+                coinslength: action.payload.length
+            };
+        }
+        case GetDataActions.CHANGE_PAGE: {
+            const _pageSize = action.payload.pageSize;
+            const _pageIndex = action.payload.pageIndex;
+            const payload = action.payload.slice(_pageIndex, _pageSize);
+            return {
+                ...state,
+                isLoading: false,
+                isLoaded: true,
+                pageIndex: _pageIndex,
+                pageSize: _pageSize,
+                coins: payload,
                 coinslength: action.payload.length
             };
         }
