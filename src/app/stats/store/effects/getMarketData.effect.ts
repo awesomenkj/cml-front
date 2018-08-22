@@ -32,6 +32,13 @@ export class GetProductsEffect {
         switchMap( () => this.daoService.getOfflineCoins()),
         map( results => new getData.GetCoinsOfflineDataSuccess(results))
     );
+    @Effect()
+    public changePage$: Observable<Action> = this.action$.ofType(getData.CHANGE_PAGE).pipe(
+        map( page => page),
+        switchMap( () => this.daoService.getCoins()),
+        map( results => new getData.GetCoinsDataSuccess(results))
+    );
+
 
     public constructor(
         private action$: Actions,

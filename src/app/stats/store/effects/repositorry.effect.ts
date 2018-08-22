@@ -16,6 +16,13 @@ export class RepoEffect {
         map( results => new getRepository.GetRepositorySuccess(results))
     );
 
+    @Effect()
+    public changePage$: Observable<Action> = this.action$
+    .ofType(getRepository.CHANGE_PAGE).pipe(
+        switchMap( () => this.daoService.getRepositories()),
+        map( results => new getRepository.GetRepositorySuccess(results))
+    );
+
     public constructor(
         private action$: Actions,
         private daoService: DaoService

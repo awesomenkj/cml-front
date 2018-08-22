@@ -17,60 +17,60 @@
   </section>
 
   <mat-card class="table">
-    <app-loader [hidden]="loaded"></app-loader>
-    <mat-table #table [dataSource]="reposDatasource" matSort>
+    <app-loader [hidden]="reposLength | async"></app-loader>
+    <mat-table #table [dataSource]="reposDatasource | async" matSort (matSortChange)="sortData($event)">
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="name"> Name </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <p class="name">{{element.nameWithOwner}}</p> 
+          <p class="name">{{element.nameWithOwner}}</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="commits">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Commits </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="commits"> Commits </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <p>{{element?.defaultBranchRef?.target?.history?.totalCount?element?.defaultBranchRef?.target?.history?.totalCount:0 | number}}</p> 
+          <p>{{element?.defaultBranchRef?.target?.history?.totalCount?element?.defaultBranchRef?.target?.history?.totalCount:0 | number}}</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="issues">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Issues </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="issues"> Issues </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <p>{{element.issues | number}}</p> 
+          <p>{{element.issues | number}}</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="milestones">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Milestones </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="milestones"> Milestones </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <p>{{element.milestones | number}}</p> 
+          <p>{{element.milestones | number}}</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="projects">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Projects </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="projects"> Projects </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <p>{{element.projects | number}}</p> 
+          <p>{{element.projects | number}}</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="pullRequests">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Pull requests </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="pullRequests"> Pull requests </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <p>{{element.pullRequests | number}}</p> 
+          <p>{{element.pullRequests | number}}</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="releases">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Releases </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="releases"> Releases </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <p>{{element.releases | number}}</p> 
+          <p>{{element.releases | number}}</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="stargazers">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Stargazers </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="stargazers"> Stargazers </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <p>{{element.stargazers | number}}</p> 
+          <p>{{element.stargazers | number}}</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="watchers">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Watchers </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="watchers"> Watchers </mat-header-cell>
         <mat-cell *matCellDef="let element">
-          <p>{{element.watchers | number}}</p> 
+          <p>{{element.watchers | number}}</p>
         </mat-cell>
       </ng-container>
 
@@ -78,8 +78,10 @@
       <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
     </mat-table>
     <mat-paginator #paginator
+      [length] = "reposLength"
       [pageSize]="50"
-      [pageSizeOptions]="[50, 100, 200]">
+      [pageSizeOptions]="[50, 100, 200]"
+      (page)="goToNextPage($event)">
     </mat-paginator>
   </mat-card>
 </div>

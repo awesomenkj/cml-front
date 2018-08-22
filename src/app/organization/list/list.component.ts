@@ -1,13 +1,13 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CoinsDataSource } from '../services/coins-datasource.service';
-import { MatPaginator, MatSort } from '@angular/material';
-import { DaoService } from '../services/dao.service';
-import { GithubService } from '../services/github.service';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 import { Store } from '@ngrx/store';
 import * as CoinsAction from '../../stats/store/actions/getRequests.action';
 import * as Reducers from '../../stats/store/reducers/index';
+import { PageEvent } from '@angular/material';
+import * as Selector from '../../stats/store/selectors/filter-list.selector';
 
 @Component({
   selector: 'app-org-list',
@@ -20,26 +20,34 @@ export class ListComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) public sort: MatSort;
 
   public displayColumns = [ 'rank', 'name', 'price', 'marketCap', 'currentSupply', 'volume', 'changeDay', 'action'];
-  public coinsDatasource: CoinsDataSource | null;
-  public loaded = false;
+  public coinsDatasource: CoinsDataSource | null | any;
+  public test: CoinsDataSource | null | any;
   public coins;
+  public coinsLength: any;
+  public pageEvent: PageEvent;
 
   public constructor(
-    private dao: DaoService,
     private router: Router,
-    private gitService: GithubService,
     private store: Store<Reducers.IState>,
-  ) { }
-
+  ) {
+  }
   public ngOnInit() {
     this.store.dispatch(new CoinsAction.GetCoinsData() );
+
     this.paginator._intl.itemsPerPageLabel = 'Coins per page';
-    this.coinsDatasource = new CoinsDataSource(this.dao, this.paginator, this.sort, this.gitService);
-    this.coinsDatasource.coins.subscribe((coins) => {
-      if (coins.length > 0) {
-        this.loaded = true;
-      }
+    this.coinsLength  = this.store.select('CoinsData', 'coinslength');
+    this.store.select(Selector.getCoins).subscribe(coins => {
+      this.coinsDatasource = new MatTableDataSource(coins);
     });
+  }
+  public goToNextPage($event) {
+      this.store.dispatch(new CoinsAction.ChangePage($event));
+  }
+  public sortData($event) {
+    if ($event.direction === '') {
+      return;
+    }
+    this.store.dispatch(new CoinsAction.FieldsFilter($event));
   }
 
   public ngAfterViewInit() {
