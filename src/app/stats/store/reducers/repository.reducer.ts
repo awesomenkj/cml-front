@@ -8,6 +8,7 @@ export interface IState {
     reposLength: number;
     pageIndex: any;
     pageSize: any;
+    filter: any;
 }
 
 const initialState: IState = {
@@ -17,6 +18,10 @@ const initialState: IState = {
     reposLength: 0,
     pageIndex: 0,
     pageSize: 50,
+    filter: {
+      active: '',
+      direction: 'asc'
+    }
 };
 
 export function reducer ( state = initialState, action: GeRepositoryActions.AllMarketData): IState {
@@ -50,6 +55,13 @@ export function reducer ( state = initialState, action: GeRepositoryActions.AllM
               pageSize: _pageSize,
           };
       }
+      case GeRepositoryActions.FIELD_FILTER: {
+        return {
+            ...state,
+            filter: {active: action.payload.active, direction: action.payload.direction},
+            isLoading: true
+        };
+     }
         default: {
             return state;
         }

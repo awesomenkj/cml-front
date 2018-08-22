@@ -50,7 +50,9 @@ export class ListComponent implements OnInit, AfterViewInit {
       this.store.dispatch(new CoinsAction.ChangePage($event));
   }
   public sortData($event) {
-    this.store.dispatch(new CoinsAction.FieldsFilter($event));
+    if ($event.direction !== '') {
+      this.store.dispatch(new CoinsAction.FieldsFilter($event));
+    }
   }
 
   public ngAfterViewInit() {
