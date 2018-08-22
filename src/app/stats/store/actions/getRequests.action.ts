@@ -11,6 +11,8 @@ export const GET_COINS_OFFLINE_DATA_SUCCESS = '[Coins] Get Offline Coins Data Su
 
 export const CHANGE_PAGE = '[Paginator] Change Page';
 
+export const FIELDS_FILTER = '[FILTER] Fields Filter';
+
 export class GetCoinsData implements Action {
     public readonly type = GET_COINS_DATA;
 }
@@ -20,6 +22,10 @@ export class GetCoinsDataSuccess implements Action {
 }
 export class ChangePage implements Action {
     public readonly type = CHANGE_PAGE;
+    public constructor( public payload: any ) {}
+}
+export class FieldsFilter implements Action {
+    public readonly type = FIELDS_FILTER;
     public constructor( public payload: any ) {}
 }
 
@@ -46,4 +52,9 @@ export type AllProducts =
                         GetCoinsOnlineDataSuccess |
                         GetCoinsOfflineData |
                         GetCoinsOfflineDataSuccess |
+<<<<<<< HEAD
                         ChangePage;
+=======
+                        ChangePage |
+                        FieldsFilter;
+>>>>>>> 3bee1aadb13012d0af3f5abb0ed67ed26ca513db

@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import * as CoinsAction from '../../stats/store/actions/getRequests.action';
 import * as Reducers from '../../stats/store/reducers/index';
 import { PageEvent } from '@angular/material';
+import * as Selector from '../../stats/store/selectors/filter-list.selector';
 
 @Component({
   selector: 'app-org-list',
@@ -31,7 +32,6 @@ export class ListComponent implements OnInit, AfterViewInit {
     private store: Store<Reducers.IState>,
   ) {
   }
-
   public ngOnInit() {
     this.store.dispatch(new CoinsAction.GetCoinsData() );
 
@@ -42,13 +42,17 @@ export class ListComponent implements OnInit, AfterViewInit {
         this.loaded = true;
       }
     });
-    this.store.select('CoinsData', 'coins').subscribe(coins => {
+    this.store.select(Selector.getCoins).subscribe(coins => {
       this.coinsDatasource = new MatTableDataSource(coins);
     });
   }
   public goToNextPage($event) {
       this.store.dispatch(new CoinsAction.ChangePage($event));
   }
+  public sortData($event) {
+    this.store.dispatch(new CoinsAction.FieldsFilter($event));
+  }
+
   public ngAfterViewInit() {
     this.coinsDatasource.paginator = this.paginator;
     this.coinsDatasource.sort = this.sort;

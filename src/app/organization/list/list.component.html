@@ -18,47 +18,47 @@
 
   <mat-card class="table">
     <app-loader [hidden]="loaded"></app-loader>
-    <mat-table #table [dataSource]="coinsDatasource" matSort>
+    <mat-table #table [dataSource]="coinsDatasource" matSort (matSortChange)="sortData($event)">
       <ng-container matColumnDef="rank">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> # </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="rank" > # </mat-header-cell>
         <mat-cell *matCellDef="let element">{{element.finance.rank}} </mat-cell>
       </ng-container>
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Name </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="name"> Name </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <p class="name">{{element.name}}</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="price">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Price </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="price"> Price </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <p *ngIf="element.finance.price > 1" class="price">{{element.finance.price | currency:'USD'}}</p>
           <p *ngIf="element.finance.price < 1" class="price">{{element.finance.price | currency:'USD':'symbol-narrow':'1.4-4'}}</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="marketCap">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Market Cap </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="marketCap"> Market Cap </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <p *ngIf="element.finance.marketCap">{{element.finance.marketCap | currency:'USD':'symbol-narrow':'4.0'}}</p>
           <p *ngIf="!element.finance.marketCap">?</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="currentSupply">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Supply </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="currentSupply"> Supply </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <p *ngIf="element.finance.currentSupply">{{element.finance.currentSupply | number}} <small>{{element.symbol}}</small></p>
           <p *ngIf="!element.finance.currentSupply">?</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="volume">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Volume (24h) </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="volume"> Volume (24h) </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <p *ngIf="element.finance.volume">{{element.finance.volume | currency:'USD':'symbol-narrow':'4.0'}}</p>
           <p *ngIf="!element.finance.volume">?</p>
         </mat-cell>
       </ng-container>
       <ng-container matColumnDef="changeDay">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Change (24h) </mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header="changeDay"> Change (24h) </mat-header-cell>
         <mat-cell *matCellDef="let element">
           <p *ngIf="element.finance.volume" [ngClass]="element.finance.changeDay > 0 ? 'green':'red'" class="price-change">{{element.finance.changeDay | number:'.2'}}%</p>
           <p *ngIf="!element.finance.volume">?</p>
