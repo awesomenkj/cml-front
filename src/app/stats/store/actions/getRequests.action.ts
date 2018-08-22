@@ -52,9 +52,5 @@ export type AllProducts =
                         GetCoinsOnlineDataSuccess |
                         GetCoinsOfflineData |
                         GetCoinsOfflineDataSuccess |
-<<<<<<< HEAD
-                        ChangePage;
-=======
                         ChangePage |
                         FieldsFilter;
->>>>>>> 3bee1aadb13012d0af3f5abb0ed67ed26ca513db
