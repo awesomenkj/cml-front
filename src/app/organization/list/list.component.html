@@ -17,7 +17,7 @@
   </section>
 
   <mat-card class="table">
-    <app-loader [hidden]="loaded"></app-loader>
+    <app-loader [hidden]="coinsLength | async"></app-loader>
     <mat-table #table [dataSource]="coinsDatasource" matSort (matSortChange)="sortData($event)">
       <ng-container matColumnDef="rank">
         <mat-header-cell *matHeaderCellDef mat-sort-header="rank" > # </mat-header-cell>
@@ -75,7 +75,7 @@
       <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
 
     </mat-table>
-    <mat-paginator #paginator 
+    <mat-paginator #paginator
       [length] = "coinsLength"
       [pageSize]="50"
       [pageSizeOptions]="[50, 100, 200]"

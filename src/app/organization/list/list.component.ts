@@ -22,7 +22,6 @@ export class ListComponent implements OnInit, AfterViewInit {
   public displayColumns = [ 'rank', 'name', 'price', 'marketCap', 'currentSupply', 'volume', 'changeDay', 'action'];
   public coinsDatasource: CoinsDataSource | null | any;
   public test: CoinsDataSource | null | any;
-  public loaded = false;
   public coins;
   public coinsLength: any;
   public pageEvent: PageEvent;
@@ -36,12 +35,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     this.store.dispatch(new CoinsAction.GetCoinsData() );
 
     this.paginator._intl.itemsPerPageLabel = 'Coins per page';
-    this.store.select('CoinsData', 'coinslength').subscribe( coinsLength => {
-      if (coinsLength) {
-        this.coinsLength = coinsLength;
-        this.loaded = true;
-      }
-    });
+    this.coinsLength  = this.store.select('CoinsData', 'coinslength');
     this.store.select(Selector.getCoins).subscribe(coins => {
       this.coinsDatasource = new MatTableDataSource(coins);
     });
@@ -50,9 +44,10 @@ export class ListComponent implements OnInit, AfterViewInit {
       this.store.dispatch(new CoinsAction.ChangePage($event));
   }
   public sortData($event) {
-    if ($event.direction !== '') {
-      this.store.dispatch(new CoinsAction.FieldsFilter($event));
+    if ($event.direction === '') {
+      return;
     }
+    this.store.dispatch(new CoinsAction.FieldsFilter($event));
   }
 
   public ngAfterViewInit() {

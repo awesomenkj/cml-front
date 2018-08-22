@@ -51,12 +51,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
       this.sort,
       this.gitService
     );
-    this.store.select('GetRepository', 'reposLength').subscribe(reposLength => {
-      if (reposLength) {
-        this.reposLength = reposLength;
-        this.loaded = true;
-      }
-    });
+    this.reposLength = this.store.select('GetRepository', 'reposLength');
     this.store.select(Selector.getRepos).subscribe(repos => {
       this.reposDatasource = new MatTableDataSource(repos);
     });
@@ -74,8 +69,9 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
     this.reposDatasource.filter = filterValue.trim().toLowerCase();
   }
   public sortData($event) {
-    if ($event.direction !== '') {
-      this.store.dispatch(new RepositoryAction.FieldFilter($event));
+    if ($event.direction === '') {
+      return;
     }
+    this.store.dispatch(new RepositoryAction.FieldFilter($event));
   }
 }
