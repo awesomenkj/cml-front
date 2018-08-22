@@ -57,7 +57,7 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
         this.loaded = true;
       }
     });
-    this.store.select(Selector.GetRepository).subscribe(repos => {
+    this.store.select(Selector.getRepos).subscribe(repos => {
       this.reposDatasource = new MatTableDataSource(repos);
     });
   }

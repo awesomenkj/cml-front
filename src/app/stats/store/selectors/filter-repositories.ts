@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-export const GetRepository = createSelector(
+export const getRepos = createSelector(
   createFeatureSelector<any>('GetRepository'),
   (repos: any) => {
     return getSortData(repos.repository, repos.filter);
