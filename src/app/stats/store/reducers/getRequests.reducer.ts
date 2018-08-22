@@ -59,7 +59,9 @@ export function reducer ( state = initialState, action: GetDataActions.AllProduc
             };
         }
         case GetDataActions.GET_COINS_DATA_SUCCESS: {
-            const payload = action.payload.slice(0, 50);
+            const _pageSize = state.pageSize;
+            const _pageIndex = state.pageIndex;
+            const payload = action.payload.slice(_pageIndex * _pageSize, (_pageIndex + 1) * _pageSize);
             return {
                 ...state,
                 isLoading: false,
@@ -71,15 +73,12 @@ export function reducer ( state = initialState, action: GetDataActions.AllProduc
         case GetDataActions.CHANGE_PAGE: {
             const _pageSize = action.payload.pageSize;
             const _pageIndex = action.payload.pageIndex;
-            const payload = action.payload.slice(_pageIndex, _pageSize);
             return {
                 ...state,
-                isLoading: false,
-                isLoaded: true,
+                isLoading: true,
+                isLoaded: false,
                 pageIndex: _pageIndex,
                 pageSize: _pageSize,
-                coins: payload,
-                coinslength: action.payload.length
             };
         }
         default: {

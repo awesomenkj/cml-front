@@ -47,7 +47,7 @@ export class ListComponent implements OnInit, AfterViewInit {
     });
   }
   public goToNextPage($event) {
-    this.store.dispatch(new CoinsAction.ChangePage($event));
+      this.store.dispatch(new CoinsAction.ChangePage($event));
   }
   public ngAfterViewInit() {
     this.coinsDatasource.paginator = this.paginator;
