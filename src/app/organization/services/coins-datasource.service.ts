@@ -39,7 +39,6 @@ export class CoinsDataSource extends DataSource<any> {
                 }).filter(Boolean);
             } else {
                 result = this.getSortData();
-                // console.log(result);
             }
             this.paginator.length = result.length;
             coins = result.slice (

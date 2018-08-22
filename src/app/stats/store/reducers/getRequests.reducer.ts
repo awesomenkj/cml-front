@@ -11,6 +11,7 @@ export interface IState {
     coinslength: number;
     offlineCoins: any;
     onlineCoinslength: number;
+    filter: any;
 }
 
 const initialState: IState = {
@@ -22,7 +23,11 @@ const initialState: IState = {
     onlineCoins: [],
     coinslength: 0,
     offlineCoins: [],
-    onlineCoinslength: 0
+    onlineCoinslength: 0,
+    filter: {
+        active: '',
+        direction: 'asc'
+    }
 };
 
 export function reducer ( state = initialState, action: GetDataActions.AllProducts): IState {
@@ -31,6 +36,12 @@ export function reducer ( state = initialState, action: GetDataActions.AllProduc
             return {
                 ...state,
                 isLoading: true,
+            };
+        }
+        case GetDataActions.FIELDS_FILTER: {
+            return {
+                ...state,
+                filter: { active: action.payload.active, direction: action.payload.direction}
             };
         }
         case GetDataActions.GET_COINS_ONLINE_DATA: {
