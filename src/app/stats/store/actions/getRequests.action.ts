@@ -10,7 +10,6 @@ export const GET_COINS_OFFLINE_DATA = '[Coins] Get Offline Coins Data';
 export const GET_COINS_OFFLINE_DATA_SUCCESS = '[Coins] Get Offline Coins Data Success';
 
 export const CHANGE_PAGE = '[Paginator] Change Page';
-export const CHANGE_PAGE_SUCCESS = '[Paginator] Change Page Success';
 
 export class GetCoinsData implements Action {
     public readonly type = GET_COINS_DATA;
@@ -21,10 +20,6 @@ export class GetCoinsDataSuccess implements Action {
 }
 export class ChangePage implements Action {
     public readonly type = CHANGE_PAGE;
-    public constructor( public payload: any ) {}
-}
-export class ChangePageSuccess implements Action {
-    public readonly type = CHANGE_PAGE_SUCCESS;
     public constructor( public payload: any ) {}
 }
 
@@ -51,5 +46,4 @@ export type AllProducts =
                         GetCoinsOnlineDataSuccess |
                         GetCoinsOfflineData |
                         GetCoinsOfflineDataSuccess |
-                        ChangePage |
-                        ChangePageSuccess;
+                        ChangePage;

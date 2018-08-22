@@ -8,7 +8,6 @@ import * as CoinsAction from './stats/store/actions/getRequests.action';
 import * as MarketAction from './stats/store/actions/getMarketdata.action';
 import * as Reducers from './stats/store/reducers/index';
 import * as OrganisationAction from './stats/store/actions/getOrganization.action';
-import * as RepositoryAction from './stats/store/actions/repository.action';
 import * as MemberAction from './stats/store/actions/member.action';
 
 @Component({
@@ -37,7 +36,6 @@ export class AppComponent implements OnInit {
     this.store.dispatch(new MarketAction.GetData());
     this.store.dispatch(new CoinsAction.GetCoinsOnlineData() );
     this.store.dispatch(new OrganisationAction.GetOrganisation());
-    this.store.dispatch(new RepositoryAction.GetRepository());
     this.store.dispatch(new MemberAction.GetMember());
 
     this.marketData$ = this.store.select('GetMarket', 'marketData');
