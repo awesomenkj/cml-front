@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { OrganizationsDataSource } from '../services/organizations-datasource.service';
-import { MatPaginator, MatSort } from '@angular/material';
-import { DaoService } from '../services/dao.service';
-import { GithubService } from '../services/github.service';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Store } from '@ngrx/store';
+import * as OrganisationAction from '../../stats/store/actions/getOrganization.action';
+import * as Reducers from '../../stats/store/reducers/index';
+import * as Selector from '../../stats/store/selectors/filter-oraganization.selector';
 
 @Component({
   selector: 'app-online',
@@ -16,27 +17,27 @@ export class OnlineComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) public sort!: MatSort;
 
   public displayColumns =
-    ['name', 'repositories', 'members', 'commits',
+    ['name', 'resourcePath', 'slug', 'commits',
       'issues', 'milestones', 'projects', 'pullRequests', 'releases', 'stargazers', 'watchers'];
-  public orgsDatasource!: OrganizationsDataSource ;
   public loaded = false;
   public coins!: any;
   public status = 'online';
+  public oraganizationLength: any;
+  public orgsDatasource!: any;
 
   public constructor(
-    private dao: DaoService,
+    private store: Store<Reducers.IState>,
     private router: Router,
-    private gitService: GithubService
   ) {
   }
 
   public ngOnInit() {
+    this.store.dispatch(new OrganisationAction.GetOrganisation());
+
     this.paginator._intl.itemsPerPageLabel = 'Organizations per page';
-    this.orgsDatasource = new OrganizationsDataSource(this.dao, this.paginator, this.sort, this.gitService);
-    this.orgsDatasource.orgs.subscribe((coins) => {
-      if (coins.length > 0) {
-        this.loaded = true;
-      }
+    this.oraganizationLength = this.store.select('GetOrganization', 'organizationLength');
+    this.store.select(Selector.oraganization).subscribe( organiz => {
+      this.orgsDatasource = new MatTableDataSource(organiz);
     });
   }
 
@@ -51,6 +52,12 @@ export class OnlineComponent implements OnInit, AfterViewInit {
 
   public applyFilter(filterValue: string) {
     this.orgsDatasource.filter = filterValue.trim().toLowerCase();
+  }
+  public sortData($event) {
+    if ($event.direction === '') {
+      return;
+    }
+    this.store.dispatch(new OrganisationAction.FieldFilter($event));
   }
 
 }

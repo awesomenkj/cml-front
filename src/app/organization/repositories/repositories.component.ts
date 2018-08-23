@@ -1,8 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { RepositoriesDataSource } from '../services/repositories-datasource.service';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { DaoService } from '../services/dao.service';
-import { GithubService } from '../services/github.service';
 import { Store } from '@ngrx/store';
 import * as RepositoryAction from '../../stats/store/actions/repository.action';
 import * as Reducers from '../../stats/store/reducers/index';
@@ -38,19 +36,10 @@ export class RepositoriesComponent implements OnInit, AfterViewInit {
 
   public constructor(
     private store: Store<Reducers.IState>,
-    private dao: DaoService,
-    private gitService: GithubService
   ) {}
 
   public ngOnInit() {
     this.store.dispatch(new RepositoryAction.GetRepository());
-    this.paginator._intl.itemsPerPageLabel = 'Repositories per page';
-    this.reposDatasource = new RepositoriesDataSource(
-      this.dao,
-      this.paginator,
-      this.sort,
-      this.gitService
-    );
     this.reposLength = this.store.select('GetRepository', 'reposLength');
     this.store.select(Selector.getRepos).subscribe(repos => {
       this.reposDatasource = new MatTableDataSource(repos);
