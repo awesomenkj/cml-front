@@ -26,35 +26,58 @@
         </div>
       </div>
       <div class="stats-wrapper">
-        <table class="first member-table">
-          <thead>
-            <th>Organizations</th>
-            <th>Repositories</th>
-            <th>Watching</th>
-          </thead>
-          <tbody>
-            <td>{{member.organizations}}
-            <td>{{member.repositories}}</td>
-            <td>{{member.watching}}</td>
-          </tbody>
-        </table>
-        <table>
-          <thead>
-            <th>Pull requests</th>
-            <th>Stared</th>
-            <th>Followers</th>
-          </thead>
-          <tbody>
-            <td>{{member.pullRequests}}</td>
-            <td>{{member.starredRepositories}}</td>
-            <td>{{member.followers}}</td>
-          </tbody>
-        </table>
+          <app-loader [hidden]="membersLength | async"></app-loader>
+        <mat-table class="first member-table" #table [dataSource]="membersDatasource" matSort (matSortChange)="sortData($event)">
+             <ng-container matColumnDef="organizations">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="organizations"> Organizations </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <p class="name">{{member.organizations}}</p>
+                </mat-cell>
+              </ng-container>
+                  <ng-container matColumnDef="repositories">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="repositories"> Repositories </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <p class="name">{{member.repositories}}</p>
+                </mat-cell>
+              </ng-container>
+                  <ng-container matColumnDef="watching">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="watching"> Watching </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <p class="name">{{member.watching}}</p>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayColumns; sticky: true"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+        </mat-table>
+        <mat-table #table [dataSource]="membersDatasource" matSort (matSortChange)="sortData($event)">
+            <ng-container matColumnDef="pullRequests">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="pullRequests"> Pull requests </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <p class="name">{{member.pullRequests}}</p>
+                </mat-cell>
+              </ng-container>
+                  <ng-container matColumnDef="stared">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="stared"> Stared </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <p class="name">{{member.starredRepositories}}</p>
+                </mat-cell>
+              </ng-container>
+                  <ng-container matColumnDef="followers">
+                <mat-header-cell *matHeaderCellDef mat-sort-header="followers"> Followers </mat-header-cell>
+                <mat-cell *matCellDef="let element">
+                  <p class="name">{{member.followers}}</p>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayColumns; sticky: true"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayColumns;"></mat-row>
+        </mat-table>
       </div>
     </div>
-  </mat-card>
-  <mat-paginator #paginator
+    <mat-paginator #paginator
     [pageSize]="50"
     [pageSizeOptions]="[50, 100, 200]">
   </mat-paginator>
+  </mat-card>
 </div>

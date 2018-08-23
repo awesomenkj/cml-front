@@ -16,6 +16,13 @@ export class MemberEffect {
         map( results => new getMember.GetMemberSuccess(results))
     );
 
+    @Effect()
+    public getMemberData$: Observable<Action> = this.action$
+    .ofType(getMember.CHANGE_PAGE).pipe(
+        switchMap( () => this.daoService.getMembers()),
+        map( results => new getMember.GetMemberSuccess(results))
+    );
+
     public constructor(
         private action$: Actions,
         private daoService: DaoService
