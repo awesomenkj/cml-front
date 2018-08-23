@@ -45,7 +45,7 @@ export class DaoService {
     return this.db.collection('cml-coins',
       ref => ref.where('gitStatus.synced', '==', true)
         .orderBy('finance.rank', 'asc')).valueChanges();
-  };
+      };
 
   public getOfflineCoins = () => {
     return this.db.collection('cml-coins',
@@ -64,6 +64,9 @@ export class DaoService {
   public getOrganizations = () => {
     return this.db.collection('cml-git-organizations',
       ref => ref.where('isOnline', '==', true).orderBy('github.stargazers', 'desc')).valueChanges();
+  };
+  public getOrganization = () => {
+    return this.db.collection('cml-git-organizations', ref => ref.orderBy('github.stargazers', 'desc')).valueChanges();
   };
 
   public getRepositories = () => {
